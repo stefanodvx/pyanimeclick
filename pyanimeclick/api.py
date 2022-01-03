@@ -79,6 +79,8 @@ class AnimeClick:
             data["original_title"] = original_title.find_next("span").text.strip()
         if short_title := main.find(text="Titolo breve"):
             data["short_title"] = short_title.find_next("span").text.strip()
+        if italian_name := main.find("div", {"class": "page-header"}):
+            data["italian_name"] = italian_name.find("h1").text
         if genres := main.find(text="Genere"):
             data["genres"] = [
                 genre.text.strip()
@@ -115,6 +117,8 @@ class AnimeClick:
             data["original_title"] = original_title.find_next("span").text.strip()
         if short_title := main.find(text="Titolo breve"):
             data["short_title"] = short_title.find_next("span").text.strip()
+        if italian_name := main.find("div", {"class": "page-header"}):
+            data["italian_name"] = italian_name.find("h1").text
         if genres := main.find(text="Genere"):
             data["genres"] = [
                 genre.text.strip()
