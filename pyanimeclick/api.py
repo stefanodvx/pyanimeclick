@@ -98,8 +98,8 @@ class AnimeClick:
                 ).div.find_all("h4", {"class": "media-heading"})
             ]
         durations = [
-            int(i.group(1))
-            for i in re.findall(r"(\d{2,3})'", episodes)
+            int(i) for i
+            in re.findall(r"(\d{1,3})\&\#39", episodes)
         ]
         if len(durations) != 0:
             data["average_duration"] = int(sum(durations) // len(durations))
