@@ -133,12 +133,12 @@ class AnimeClick:
         if drawings := main.find(text="Disegni"):
             data["drawings"] = [
                 getattr(artist.find("a"), "text", None) or artist.text.strip()
-                for artist in drawings.find("span").find_all("span", {"itemprop": "name"})
+                for artist in drawings.find_next("dd").find_all("span", {"itemprop": "name"})
             ]
         if history := main.find(text="Storia"):
             data["history"] = [
                 getattr(artist.find("a"), "text", None) or artist.text.strip()
-                for artist in history.find("span").find_all("span", {"itemprop": "name"})
+                for artist in history.find_next("dd").find_all("span", {"itemprop": "name"})
             ]
         if category := main.find(text="Categoria"):
             data["category"] = [
