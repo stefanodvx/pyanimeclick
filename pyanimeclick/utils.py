@@ -1,7 +1,5 @@
 from typing import Dict
 
-version = "1.0"
-
 BASE_URL = "https://www.animeclick.it"
 MANGA_PAGE = "https://www.animeclick.it/manga/{}/evangelionislife"
 ANIME_PAGE = "https://www.animeclick.it/manga/{}/darkisgay"

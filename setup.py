@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pyanimeclick",
-    version="1.0",
+    version="1.0.1",
     author="stefanodvx",
     author_email="pp.stefanodvx@gmail.com",
     description="API for AnimeClick.it",

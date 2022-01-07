@@ -128,6 +128,30 @@ class AnimeClick:
                 genre.text.strip()
                 for genre in genres.find_next("dd").find_all("a")
             ]
+        if nationality := main.find(text="Nazionalità"):
+            data["nationality"] = nationality.find_next("span", {"itemprop": "name"}).text.strip()
+        if drawings := main.find(text="Disegni"):
+            data["drawings"] = [
+                getattr(artist.find("a"), "text", None) or artist.text.strip()
+                for artist in drawings.find_all("span", {"itemprop": "name"})
+            ]
+        if history := main.find(text="Storia"):
+            data["history"] = [
+                getattr(artist.find("a"), "text", None) or artist.text.strip()
+                for artist in history.find_all("span", {"itemprop": "name"})
+            ]
+        if category := main.find(text="Categoria"):
+            data["category"] = [
+                _category.text.strip()
+                for _category in category.find_next("dd").find_all("a")
+            ]
+        if category := main.find(text="Categoria"):
+            data["category"] = [
+                _category.text.strip()
+                for _category in category.find_next("dd").find_all("a")
+            ]
+        if status := main.find(text="Stato in patria"):
+            data["status"] = status.find_next("dd").text
         if overview := main.find("div", {"id": "trama-div"}):
             data["overview"] = overview.text.replace("Trama: ", "").strip()
         data["thumb"] = BASE_URL + main.find("img", {"alt": "copertina"})["src"]
