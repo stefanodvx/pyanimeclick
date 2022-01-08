@@ -103,7 +103,7 @@ class AnimeClick:
         ]
         if len(durations) != 0:
             data["average_duration"] = int(sum(durations) // len(durations))
-        data["thumb"] = BASE_URL + main.find("img", {"alt": "copertina"})["src"]
+        data["thumb"] = BASE_URL + main.find("img", {"alt": "copertina"})["src"].replace("-thumb-mini", "")
         return Anime(**data)
     
     async def get_manga(self, id: int) -> Anime:
@@ -154,5 +154,5 @@ class AnimeClick:
             data["status"] = status.find_next("dd").text
         if overview := main.find("div", {"id": "trama-div"}):
             data["overview"] = overview.text.replace("Trama: ", "").strip()
-        data["thumb"] = BASE_URL + main.find("img", {"alt": "copertina"})["src"]
+        data["thumb"] = BASE_URL + main.find("img", {"alt": "copertina"})["src"].replace("-thumb-mini", "")
         return Manga(**data)
