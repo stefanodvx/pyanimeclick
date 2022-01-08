@@ -151,7 +151,7 @@ class AnimeClick:
                 for _category in category.find_next("dd").find_all("a")
             ]
         if status := main.find(text="Stato in patria"):
-            data["status"] = status.find_next("dd").text
+            data["status"] = status.find_next("dd").text.strip()
         if overview := main.find("div", {"id": "trama-div"}):
             data["overview"] = overview.text.replace("Trama: ", "").strip()
         data["thumb"] = BASE_URL + main.find("img", {"alt": "copertina"})["src"].replace("-thumb-mini", "")
