@@ -13,7 +13,7 @@ from .utils import *
 
 def log_response(response: Response):
     request = response.request
-    print(f"{request.method} | {request.url}\nStatus | {response.status_code}\nCookies | {response.cookies}\nHeaders | {response.headers)")
+    print(f"{request.method} | {request.url}\nStatus | {response.status_code}\nCookies | {response.cookies}\nHeaders | {response.headers}")
     with open(f"request_{time.time()}.txt", "w+") as f:
         f.write(response.text)
 
