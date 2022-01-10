@@ -2,7 +2,7 @@ from typing import Dict
 
 BASE_URL = "https://www.animeclick.it"
 MANGA_PAGE = "https://www.animeclick.it/manga/{}/evangelionislife"
-ANIME_PAGE = "https://www.animeclick.it/manga/{}/darkisgay"
+ANIME_PAGE = "https://www.animeclick.it/anime/{}/darkisgay"
 SEARCH_PAGE = "https://www.animeclick.it/cerca"
 
 def ac_headers() -> Dict:

@@ -13,8 +13,9 @@ from .utils import *
 
 def log_response(response: Response):
     request = response.request
-    print(f"{request.method} | {request.url}\nStatus | {response.status_code}\nCookies | {response.cookies}\nHeaders | {response.headers}")
-    with open(f"request_{time.time()}.txt", "w+") as f:
+    file_name = f"request_{time.time()}.txt"
+    print(f"\033[36m{request.method} \033[37m| \033[33m{request.url}\n\033[36mStatus \033[37m| \033[33m{response.status_code}")
+    with open(file_name, "w+") as f:
         f.write(response.text)
 
 class AnimeClick:
