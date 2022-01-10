@@ -21,10 +21,10 @@ def log_response(response: Response):
         f.write(response.text)
 
 class AnimeClick:
-    def __init__(self, log=False):
-        self.log = log
 
-    @classmethod
+    def __init__(self, log: bool=False):
+        self.log: bool = log
+
     async def _make_request(
         self,
         method: str,
@@ -54,7 +54,7 @@ class AnimeClick:
 
     async def search(self, query: str) -> List[Result]:
         r = await self._make_request(
-            "GET", SEARCH_PAGE,
+            self, "GET", SEARCH_PAGE,
             params={"name": query}
         )
         soup = BeautifulSoup(r.text, "lxml")
@@ -78,15 +78,15 @@ class AnimeClick:
 
     async def get_anime(self, id: int) -> Anime:
         r = await self._make_request(
-            "GET", ANIME_PAGE.format(str(id))
+            self, "GET", ANIME_PAGE.format(str(id))
         )
         main = BeautifulSoup(r.text, "lxml")
         r = await self._make_request(
-            "GET", ANIME_PAGE.format(str(id)) + "/staff"
+            self, "GET", ANIME_PAGE.format(str(id)) + "/staff"
         )
         staff = BeautifulSoup(r.text, "lxml")
         r = await self._make_request(
-            "GET", ANIME_PAGE.format(str(id)) + "/episodi"
+            self, "GET", ANIME_PAGE.format(str(id)) + "/episodi"
         )
         episodes = r.text
 
@@ -126,7 +126,7 @@ class AnimeClick:
     
     async def get_manga(self, id: int) -> Anime:
         r = await self._make_request(
-            "GET", MANGA_PAGE.format(str(id))
+            self, "GET", MANGA_PAGE.format(str(id))
         )
         main = BeautifulSoup(r.text, "lxml")
 
