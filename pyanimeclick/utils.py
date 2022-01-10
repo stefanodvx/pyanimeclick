@@ -11,4 +11,10 @@ def headers() -> Dict:
     }
 
 def cookies() -> Dict:
-    return {"ac_campaign": "show"}
+    return {
+        "AC_SCREEN_RESOLUTION": "1920x1080",
+        "AC_VIEWPORT_RESOLUTION": "629x588",
+        "ac_campaign": "show",
+        "device_view": "full",
+        "AC_EU_COOKIE_LAW_CONSENT": "Y"
+    }
