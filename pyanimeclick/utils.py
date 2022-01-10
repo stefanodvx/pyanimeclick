@@ -5,12 +5,12 @@ MANGA_PAGE = "https://www.animeclick.it/manga/{}/evangelionislife"
 ANIME_PAGE = "https://www.animeclick.it/manga/{}/darkisgay"
 SEARCH_PAGE = "https://www.animeclick.it/cerca"
 
-def headers() -> Dict:
+def ac_headers() -> Dict:
     return {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36",
     }
 
-def cookies() -> Dict:
+def ac_cookies() -> Dict:
     return {
         "AC_SCREEN_RESOLUTION": "1920x1080",
         "AC_VIEWPORT_RESOLUTION": "629x588",

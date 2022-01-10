@@ -22,8 +22,8 @@ class AnimeClick:
             r = await session.request(
                 method=method,
                 url=url,
-                headers=headers(),
-                cookies=cookies(),
+                headers=ac_headers(),
+                cookies=ac_cookies(),
                 params=params,
                 follow_redirects=True
             )
@@ -32,6 +32,8 @@ class AnimeClick:
             raise RequestError(f"[{code}] {r.text}")
         if "AnimeClick.it ....dove sei?!" in r.text:
             raise InvalidCode(f"Il codice inserito non è valido.")
+        if "Informazione Pubblicitaria" in r.text:
+            raise RequestError("Non sono riuscito a bypassare le pubblicità. :(")
         return r
 
     async def search(self, query: str) -> List[Result]:
@@ -139,11 +141,6 @@ class AnimeClick:
             data["history"] = [
                 getattr(artist.find("a"), "text", None) or artist.text.strip()
                 for artist in history.find_next("dd").find_all("span", {"itemprop": "name"})
-            ]
-        if category := main.find(text="Categoria"):
-            data["category"] = [
-                _category.text.strip()
-                for _category in category.find_next("dd").find_all("a")
             ]
         if category := main.find(text="Categoria"):
             data["category"] = [
