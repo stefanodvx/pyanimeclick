@@ -14,7 +14,7 @@ from .utils import *
 def log_response(response: Response):
     request = response.request
     file_name = f"request_{time.time()}.txt"
-    print(f"\033[36m{request.method} \033[37m| \033[33m{request.url}\n\033[36mStatus \033[37m| \033[33m{response.status_code}")
+    print(f"\033[36m{request.method} ({response.status_code}) \033[37m| \033[33m{request.url}\033[39m")
     with open(file_name, "w+") as f:
         f.write(response.text)
 
