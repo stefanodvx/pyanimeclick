@@ -11,9 +11,6 @@ from .errors import *
 from .types import *
 from .utils import *
 
-def log_request(request: Request):
-    print(f"Request event hook: {request.method} {request.url} - Waiting for response")
-
 def log_response(response: Response):
     request = response.request
     print(f"Response event hook: {request.method} {request.url} - Status {response.status_code}")
@@ -31,10 +28,7 @@ class AnimeClick:
         url: str,
         params: Dict=None,
     ) -> Optional[Response]:
-        async with httpx.AsyncClient(
-            event_hooks={'request': [log_request], 'response': [log_response]}
-            if self.log else None
-        ) as session:
+        async with httpx.AsyncClient() as session:
             r = await session.request(
                 method=method,
                 url=url,
@@ -50,6 +44,8 @@ class AnimeClick:
             raise InvalidCode(f"Il codice inserito non è valido.")
         if "Informazione Pubblicitaria" in r.text:
             raise RequestError("Non sono riuscito a bypassare le pubblicità. :(")
+        if self.log:
+            log_response(r)
         return r
 
     async def search(self, query: str) -> List[Result]:
