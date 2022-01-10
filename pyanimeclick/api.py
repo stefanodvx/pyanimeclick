@@ -1,16 +1,29 @@
 import httpx
 import re
+import time
 
 from bs4 import BeautifulSoup
 from bs4.element import Tag
-from httpx._models import Response
+from httpx._models import Response, Request
 from typing import Dict, List, Optional
 
 from .errors import *
 from .types import *
 from .utils import *
 
+def log_request(request: Request):
+    print(f"Request event hook: {request.method} {request.url} - Waiting for response")
+
+def log_response(response: Response):
+    request = response.request
+    print(f"Response event hook: {request.method} {request.url} - Status {response.status_code}")
+    with open(f"request_{time.time()}.txt", "w+") as f:
+        f.write(response.text)
+
 class AnimeClick:
+    def __init__(self, log=False):
+        self.log = log
+
     @classmethod
     async def _make_request(
         self,
@@ -18,7 +31,10 @@ class AnimeClick:
         url: str,
         params: Dict=None,
     ) -> Optional[Response]:
-        async with httpx.AsyncClient() as session:
+        async with httpx.AsyncClient(
+            event_hooks={'request': [log_request], 'response': [log_response]}
+            if self.log else None
+        ) as session:
             r = await session.request(
                 method=method,
                 url=url,
@@ -37,7 +53,7 @@ class AnimeClick:
         return r
 
     async def search(self, query: str) -> List[Result]:
-        r = await AnimeClick._make_request(
+        r = await self._make_request(
             "GET", SEARCH_PAGE,
             params={"name": query}
         )
@@ -61,15 +77,15 @@ class AnimeClick:
         return [Result(**result) for result in results]
 
     async def get_anime(self, id: int) -> Anime:
-        r = await AnimeClick._make_request(
+        r = await self._make_request(
             "GET", ANIME_PAGE.format(str(id))
         )
         main = BeautifulSoup(r.text, "lxml")
-        r = await AnimeClick._make_request(
+        r = await self._make_request(
             "GET", ANIME_PAGE.format(str(id)) + "/staff"
         )
         staff = BeautifulSoup(r.text, "lxml")
-        r = await AnimeClick._make_request(
+        r = await self._make_request(
             "GET", ANIME_PAGE.format(str(id)) + "/episodi"
         )
         episodes = r.text
@@ -109,7 +125,7 @@ class AnimeClick:
         return Anime(**data)
     
     async def get_manga(self, id: int) -> Anime:
-        r = await AnimeClick._make_request(
+        r = await self._make_request(
             "GET", MANGA_PAGE.format(str(id))
         )
         main = BeautifulSoup(r.text, "lxml")
