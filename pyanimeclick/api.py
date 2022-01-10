@@ -54,7 +54,7 @@ class AnimeClick:
 
     async def search(self, query: str) -> List[Result]:
         r = await self._make_request(
-            self, "GET", SEARCH_PAGE,
+            "GET", SEARCH_PAGE,
             params={"name": query}
         )
         soup = BeautifulSoup(r.text, "lxml")
@@ -78,15 +78,15 @@ class AnimeClick:
 
     async def get_anime(self, id: int) -> Anime:
         r = await self._make_request(
-            self, "GET", ANIME_PAGE.format(str(id))
+            "GET", ANIME_PAGE.format(str(id))
         )
         main = BeautifulSoup(r.text, "lxml")
         r = await self._make_request(
-            self, "GET", ANIME_PAGE.format(str(id)) + "/staff"
+            "GET", ANIME_PAGE.format(str(id)) + "/staff"
         )
         staff = BeautifulSoup(r.text, "lxml")
         r = await self._make_request(
-            self, "GET", ANIME_PAGE.format(str(id)) + "/episodi"
+            "GET", ANIME_PAGE.format(str(id)) + "/episodi"
         )
         episodes = r.text
 
@@ -126,7 +126,7 @@ class AnimeClick:
     
     async def get_manga(self, id: int) -> Anime:
         r = await self._make_request(
-            self, "GET", MANGA_PAGE.format(str(id))
+            "GET", MANGA_PAGE.format(str(id))
         )
         main = BeautifulSoup(r.text, "lxml")
 
