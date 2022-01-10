@@ -4,7 +4,7 @@ import time
 
 from bs4 import BeautifulSoup
 from bs4.element import Tag
-from httpx._models import Response, Request
+from httpx._models import Response
 from typing import Dict, List, Optional
 
 from .errors import *
@@ -37,6 +37,8 @@ class AnimeClick:
                 params=params,
                 follow_redirects=True
             )
+        if self.log:
+            log_response(r)
         code = r.status_code
         if code != 200:
             raise RequestError(f"[{code}] {r.text}")
@@ -44,8 +46,6 @@ class AnimeClick:
             raise InvalidCode(f"Il codice inserito non è valido.")
         if "Informazione Pubblicitaria" in r.text:
             raise RequestError("Non sono riuscito a bypassare le pubblicità. :(")
-        if self.log:
-            log_response(r)
         return r
 
     async def search(self, query: str) -> List[Result]:
