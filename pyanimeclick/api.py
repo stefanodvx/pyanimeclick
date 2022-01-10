@@ -28,14 +28,15 @@ class AnimeClick:
         url: str,
         params: Dict=None,
     ) -> Optional[Response]:
-        async with httpx.AsyncClient() as session:
+        async with httpx.AsyncClient(
+            headers=ac_headers(),
+            cookies=ac_cookies(),
+            params=params,
+            follow_redirects=True
+        ) as session:
             r = await session.request(
                 method=method,
-                url=url,
-                headers=ac_headers(),
-                cookies=ac_cookies(),
-                params=params,
-                follow_redirects=True
+                url=url
             )
         if self.log:
             log_response(r)
