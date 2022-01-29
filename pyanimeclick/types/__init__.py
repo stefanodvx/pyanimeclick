@@ -2,12 +2,13 @@ from typing import Dict, List
 from pydantic import BaseModel, Field
 
 class Result(BaseModel):
-    title: str = Field(default=None)
-    url:   str = Field(default=None)
-    id:    int = Field(default=None)
-    thumb: str = Field(default=None)
-    type:  str = Field(default=None)
-    year:  int = Field(default=None)
+    title:    str = Field(default=None)
+    url:      str = Field(default=None)
+    id:       int = Field(default=None)
+    category: str = Field(default=None)
+    thumb:    str = Field(default=None)
+    type:     str = Field(default=None)
+    year:     int = Field(default=None)
 
 class Anime(BaseModel):
     title:            str = Field(default=None)

@@ -69,8 +69,10 @@ class AnimeClick:
             data["url"] = BASE_URL + body.find("a")["href"].strip()
             data["id"] = int(body.find("a")["href"].split("/")[-2].strip())
             data["thumb"] = BASE_URL + left.find("img")["src"].replace("-thumb-mini", "")
+            data["category"] = "-".join(re.search(r"categoria: (.+)", body.find(text=re.compile("categoria:")).strip()).group(1).lower().split())
             data["type"] = "manga" if body.find(text="tipo opera: Fumetto") else "anime"
-            data["year"] = int(re.search(r"(\d{4})", body.find(text=re.compile("anno inizio:")).strip()).group(1))
+            if year := re.search(r"(\d{4})", body.find(text=re.compile("anno inizio:"))):
+                data["year"] = int(year.group(1).strip())
             results.append(data)
         return [Result(**result) for result in results]
 
