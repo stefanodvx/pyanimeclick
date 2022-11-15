@@ -5,10 +5,10 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="pyanimeclick",
-    version="1.0.2",
+    version="2.0",
     author="stefanodvx",
     author_email="pp.stefanodvx@gmail.com",
-    description="API for AnimeClick.it",
+    description="Async API wrapper for AnimeClick.it",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/stefanodvx/pyanimeclick",

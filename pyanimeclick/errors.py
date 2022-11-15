@@ -1,5 +1,8 @@
-class InvalidCode(Exception):
+class AnimeClickError(Exception):
     pass
 
-class RequestError(Exception):
+class InvalidCode(AnimeClickError):
+    pass
+
+class RequestError(AnimeClickError):
     pass

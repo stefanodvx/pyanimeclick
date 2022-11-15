@@ -5,71 +5,58 @@ import time
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 from httpx._models import Response
-from typing import Dict, List, Optional
+from typing import Optional
 
-from .errors import *
-from .types import *
-from .utils import *
-
-def log_response(response: Response):
-    request = response.request
-    file_name = f"request_{time.time()}.txt"
-    print(f"\033[36m{request.method} ({response.status_code}) \033[37m| \033[33m{request.url}\033[39m")
-    with open(file_name, "w+") as f:
-        f.write(response.text)
+from .errors import InvalidCode, RequestError
 
 class AnimeClick:
+    BASE_URL = "https://www.animeclick.it"
+    TITLE_PAGE = BASE_URL + "/anime/{}/_"
+    SEARCH_PAGE = BASE_URL + "/cerca"
 
-    def __init__(self, log: bool=False):
-        self.log: bool = log
+    def __init__(self):
+        self.session = httpx.AsyncClient(
+            header={
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
+            },
+            cookies={
+                "AC_SCREEN_RESOLUTION": "1920x1080",
+                "AC_VIEWPORT_RESOLUTION": "629x588",
+                "ac_campaign": "show",
+                "device_view": "full",
+                "AC_EU_COOKIE_LAW_CONSENT": "Y"
+            }, follow_redirects=True
+        )
 
-    async def _make_request(
-        self,
-        method: str,
-        url: str,
-        params: Dict=None,
-    ) -> Optional[Response]:
-        async with httpx.AsyncClient(
-            headers=ac_headers(),
-            cookies=ac_cookies(),
-            params=params,
-            follow_redirects=True
-        ) as session:
-            r = await session.request(
-                method=method,
-                url=url
-            )
-        if self.log:
-            log_response(r)
-        code = r.status_code
+    async def _make_request(self, **kwargs) -> Optional[Response]:
+        response = await self.session.request(**kwargs)
+        code = response.status_code
         if code != 200:
-            raise RequestError(f"[{code}] {r.text}")
-        if "AnimeClick.it ....dove sei?!" in r.text:
+            raise RequestError(f"[{code}] {response.text}")
+        if "AnimeClick.it ....dove sei?!" in response.text:
             raise InvalidCode(f"Il codice inserito non è valido.")
-        if "Informazione Pubblicitaria" in r.text:
-            raise RequestError("Non sono riuscito a bypassare le pubblicità. :(")
-        return r
+        if "Informazione Pubblicitaria" in response.text:
+            raise RequestError("Non sono riuscito a bypassare le pubblicità.")
+        return response
 
     async def search(self, query: str) -> List[Result]:
-        r = await self._make_request(
-            "GET", SEARCH_PAGE,
+        response = await self._make_request(
+            method="GET", url=self.SEARCH_PAGE,
             params={"name": query}
         )
-        soup = BeautifulSoup(r.text, "lxml")
+        soup = BeautifulSoup(response.text, "lxml")
         tab = soup.find("h3", {"id": "type-opera"}).find_next("div")
-        operas: List[Tag] = tab.find_all("div", {
-            "class": "col-xs-12 col-sm-12 col-md-6 col-lg-4"
-        })
+        operas: tab.find_all("div", {"class": "col-xs-12 col-sm-12 col-md-6 col-lg-4"})
         results = list()
         for opera in operas:
             left = opera.find("div", {"class": "media-left"})
             body = opera.find("div", {"class": "media-body"})
             data = dict()
             data["title"] = body.find("a").text.strip()
-            data["url"] = BASE_URL + body.find("a")["href"].strip()
+            data["url"] = self.BASE_URL + body.find("a")["href"].strip()
             data["id"] = int(body.find("a")["href"].split("/")[-2].strip())
-            data["thumb"] = BASE_URL + left.find("img")["src"].replace("-thumb-mini", "")
-            data["category"] = "-".join(re.search(r"categoria: (.+)", body.find(text=re.compile("categoria:")).strip()).group(1).lower().split())
+            data["thumb"] = self.BASE_URL + left.find("img")["src"].replace("-thumb-mini", "")
+            data["category"] = "-".join(body.find(text=re.compile(r"categoria: (.+)")).strip().lower().split())
             data["type"] = "manga" if body.find(text="tipo opera: Fumetto") else "anime"
             if year := re.search(r"(\d{4})", body.find(text=re.compile("anno inizio:"))):
                 data["year"] = int(year.group(1).strip())
@@ -78,15 +65,15 @@ class AnimeClick:
 
     async def get_anime(self, id: int) -> Anime:
         r = await self._make_request(
-            "GET", ANIME_PAGE.format(str(id))
+            "GET", ANIME_PAGE.format(id)
         )
         main = BeautifulSoup(r.text, "lxml")
         r = await self._make_request(
-            "GET", ANIME_PAGE.format(str(id)) + "/staff"
+            "GET", ANIME_PAGE.format(id) + "/staff"
         )
         staff = BeautifulSoup(r.text, "lxml")
         r = await self._make_request(
-            "GET", ANIME_PAGE.format(str(id)) + "/episodi"
+            "GET", ANIME_PAGE.format(id) + "/episodi"
         )
         episodes = r.text
 
