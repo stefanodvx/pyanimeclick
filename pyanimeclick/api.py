@@ -30,17 +30,19 @@ class AnimeClick:
         self.parser = Parser()
 
     async def login(self, username: str, password: str):
-        response = await self._make_request(
+        # Get PHPSESSID (session_id)
+        r = await self._make_request(
             method="POST", url=LOGIN_PAGE,
             headers=LOGIN_HEADERS
         )
-        
-        print(response.cookies)
-        print(response.headers)
 
-        # TODO: Login won't work?
-        response = await self._make_request(
+        print(r.cookies)
+        print(r.headers)
+
+        # Login and get REMEMBERME
+        await self._make_request(
             method="POST", url=LOGIN_CHECK_PAGE,
+            headers=LOGIN_HEADERS,
             data={
                 "_username": username,
                 "_password": password,
@@ -49,23 +51,14 @@ class AnimeClick:
             }
         )
 
-        session_id = response.cookies.get("PHPSESSID")
-        remember_me = response.cookies.get("REMEMBERME")
+        print(self.session.cookies)
 
-        self.session.cookies.update({
-            "PHPSESSID": session_id,
-            "REMEMBERME": remember_me
-        })
-
-        return session_id, remember_me
+        return
 
 
     async def _make_request(self, **kwargs) -> Optional[Response]:
         response = await self.session.request(**kwargs)
         code = response.status_code
-
-        print(response.cookies)
-        print(response.headers)
 
         if code != 200:
             raise RequestError(f"[{code}] Response: {response.text}")
