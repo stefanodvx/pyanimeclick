@@ -37,10 +37,6 @@ class AnimeClick:
                 "_csrf_token": "",
             }
         )
-        code = response.status_code
-        if code != 200:
-            raise RequestError(f"[{code}] Response: {response.text}")
-        
         session_id = response.cookies.get("PHPSESSID")
         remember_me = response.cookies.get("REMEMBERME")
 
