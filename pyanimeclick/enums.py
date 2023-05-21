@@ -5,3 +5,4 @@ class TitleType(Enum):
     MANGA = auto()
     NOVEL = auto()
     LIVE_ACTION = auto()
+    UNKNOWN = auto()
