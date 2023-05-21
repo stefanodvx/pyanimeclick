@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from .enums import TitleType
+from .enums import TitleCategory, TitleType
 
 import re
 
@@ -14,6 +14,17 @@ title_type_mapping = {
     "fumetto": TitleType.MANGA,
     "novel": TitleType.NOVEL,
     "live action": TitleType.LIVE_ACTION
+}
+
+title_category_mapping = {
+    "film": TitleCategory.FILM,
+    "serie tv": TitleCategory.TV,
+    "shounen": TitleCategory.SHOUNEN,
+    "serie oav": TitleCategory.OAV,
+    "light novel": TitleCategory.LIGHT_NOVEL,
+    "comics americano": TitleCategory.AMERICAN_COMICS,
+    "shoujo": TitleCategory.SHOUJO,
+    "romanzo": TitleCategory.ROMANCE,
 }
 
 def find_matchin_tag(
@@ -51,3 +62,7 @@ def get_cover(path: str):
 def string_to_title_type(string: str) -> TitleType:
     string = string.lower().strip()
     return title_type_mapping.get(string, TitleType.UNKNOWN)
+
+def string_to_title_category(string: str) -> TitleCategory:
+    string = string.lower().strip()
+    return title_category_mapping.get(string, TitleCategory.UNKNOWN)
