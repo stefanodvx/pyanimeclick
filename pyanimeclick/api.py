@@ -6,14 +6,12 @@ from .types import SearchResult
 from .errors import InvalidCode, RequestError
 from .parser import Parser
 
+from .utils import SEARCH_PAGE
+
 import logging
 import httpx
 
 class AnimeClick:
-    BASE_URL = "https://www.animeclick.it"
-    TITLE_PAGE = BASE_URL + "/anime/{}/_"
-    SEARCH_PAGE = BASE_URL + "/cerca"
-
     def __init__(self):
         self.session = httpx.AsyncClient(
             headers={
@@ -47,7 +45,7 @@ class AnimeClick:
 
     async def search(self, query: str) -> Optional[list[SearchResult]]:
         response = await self._make_request(
-            method="GET", url=self.SEARCH_PAGE,
+            method="GET", url=SEARCH_PAGE,
             params={"name": query}
         )
         results = []
