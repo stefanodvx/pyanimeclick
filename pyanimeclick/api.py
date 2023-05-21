@@ -60,7 +60,7 @@ class AnimeClick:
             result = self.parser.parse_search_result(div)
             results.append(result)
 
-        return
+        return results
 
     # async def get_anime(self, id: int):
     #     r = await self._make_request(
