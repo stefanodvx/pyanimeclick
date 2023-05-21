@@ -24,12 +24,18 @@ def resolve_path(path: str):
     return BASE_URL + path
 
 def get_cover(path: str):
+    def remove_suffix(name: str):
+        suffixes = ("-thumb-mini", "-thumb", "-mini")
+        for suffix in suffixes:
+            if suffix not in name:
+                continue
+            return name.rstrip(suffix)
+        return name
     match = re.search(COVER_PATTERN, path)
     if not match:
         return None
     name, ext = match.groups()
-    for suffix in ("-thumb-mini", "-thumb", "-mini"):
-        abs_name = name.rstrip(suffix)
+    abs_name = remove_suffix(name)
     hd_cover = resolve_path(abs_name + ext)
     original_cover = resolve_path(path)
     return hd_cover, original_cover
