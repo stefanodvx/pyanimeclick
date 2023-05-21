@@ -8,7 +8,8 @@ from .parser import Parser
 
 from .utils import (
     HEADERS,
-    LOGIN_URL,
+    LOGIN_CHECK_PAGE,
+    LOGIN_PAGE,
     SEARCH_PAGE,
     COOKIES
 )
@@ -29,7 +30,13 @@ class AnimeClick:
 
     async def login(self, username: str, password: str):
         response = await self._make_request(
-            method="POST", url=LOGIN_URL.replace("https", "http"),
+            method="POST", url=LOGIN_PAGE
+        )
+
+        print(self.session.cookies)
+
+        response = await self._make_request(
+            method="POST", url=LOGIN_CHECK_PAGE,
             data={
                 "_username": username,
                 "_password": password,

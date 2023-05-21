@@ -5,7 +5,8 @@ import re
 
 BASE_URL = "https://www.animeclick.it"
 
-LOGIN_URL = BASE_URL + "/login_check"
+LOGIN_PAGE = BASE_URL + "/aclogin/login"
+LOGIN_CHECK_PAGE = BASE_URL + "/login_check"
 TITLE_PAGE = BASE_URL + "/anime/{}/_"
 SEARCH_PAGE = BASE_URL + "/cerca"
 
