@@ -11,6 +11,7 @@ from .utils import (
     LOGIN_CHECK_PAGE,
     LOGIN_PAGE,
     SEARCH_PAGE,
+    LOGIN_HEADERS,
     COOKIES
 )
 
@@ -30,8 +31,12 @@ class AnimeClick:
 
     async def login(self, username: str, password: str):
         response = await self._make_request(
-            method="POST", url=LOGIN_PAGE
+            method="POST", url=LOGIN_PAGE,
+            headers=LOGIN_HEADERS
         )
+        
+        print(response.cookies)
+        print(response.headers)
 
         # TODO: Login won't work?
         response = await self._make_request(
