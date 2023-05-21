@@ -44,7 +44,7 @@ class Parser:
             tag, "li",
             pattern=re.compile(r"categoria:\s*([\w\s]+)", flags=re.I)
         )
-        data["type"] = string_to_title_category(match.group(1)) \
+        data["category"] = string_to_title_category(match.group(1)) \
             if match else TitleCategory.UNKNOWN
         # URL
         data["url"] = resolve_path(a_tag["href"])
