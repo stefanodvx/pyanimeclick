@@ -9,4 +9,4 @@ class Parser:
         self.logger = logging.getLogger("pyanimeclick.parser")
 
     def parse_search_result(self, tag: Tag) -> SearchResult:
-        print(tag)
+        print(tag, "\n\n")
