@@ -27,7 +27,7 @@ def get_cover(path: str):
     def remove_suffix(name: str):
         suffixes = ("-thumb-mini", "-thumb", "-mini")
         for suffix in suffixes:
-            if suffix not in name:
+            if not name.endswith(suffix):
                 continue
             return name.rstrip(suffix)
         return name
