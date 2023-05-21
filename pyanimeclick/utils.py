@@ -20,8 +20,19 @@ COOKIES = {
     "AC_EU_COOKIE_LAW_CONSENT": "Y"
 }
 
+USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
+
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
+    "user-agent": USER_AGENT
+}
+LOGIN_HEADERS = {
+    "user-agnet": USER_AGENT,
+    "authority": "www.animeclick.it",
+    "accept": "application/json, text/javascript, */*; q=0.01",
+    "accept-language": "it-IT,it;q=0.9,en;q=0.8,en-US;q=0.7,it-AD;q=0.6",
+    "origin": "https://www.animeclick.it",
+    "referer": "https://www.animeclick.it/",
+    "x-requested-with": "XMLHttpRequest",
 }
 
 title_type_mapping = {

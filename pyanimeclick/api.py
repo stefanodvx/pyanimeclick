@@ -33,8 +33,7 @@ class AnimeClick:
             method="POST", url=LOGIN_PAGE
         )
 
-        print(self.session.cookies)
-
+        # TODO: Login won't work?
         response = await self._make_request(
             method="POST", url=LOGIN_CHECK_PAGE,
             data={
