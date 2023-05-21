@@ -6,28 +6,51 @@ from .types import QuerySearch
 from .errors import InvalidCode, RequestError
 from .parser import Parser
 
-from .utils import SEARCH_PAGE
+from .utils import (
+    HEADERS,
+    LOGIN_URL,
+    SEARCH_PAGE,
+    COOKIES
+)
 
 import logging
 import httpx
 
 class AnimeClick:
-    def __init__(self, session_id: str = None):
+    def __init__(self):
         self.session = httpx.AsyncClient(
-            headers={
-                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
-            },
-            cookies={
-                "AC_SCREEN_RESOLUTION": "1920x1080",
-                "AC_VIEWPORT_RESOLUTION": "629x588",
-                "ac_campaign": "show",
-                "device_view": "full",
-                "AC_EU_COOKIE_LAW_CONSENT": "Y",
-                "PHPSESSID": session_id
-            }, follow_redirects=True, timeout=10
+            headers=HEADERS,
+            cookies=COOKIES,
+            follow_redirects=True,
+            timeout=10
         )
         self.logger = logging.getLogger("pyanimeclick.main")
         self.parser = Parser()
+
+    async def login(self, username: str, password: str):
+        response = await self._make_request(
+            method="POST", url=LOGIN_URL,
+            query={
+                "_username": username,
+                "_password": password,
+                "_rememberme": "on",
+                "_csrf_token": "",
+            }
+        )
+        code = response.status_code
+        if code != 200:
+            raise RequestError(f"[{code}] Response: {response.text}")
+        
+        session_id = response.cookies.get("PHPSESSID")
+        remember_me = response.cookies.get("REMEMBERME")
+
+        self.session.cookies.update({
+            "PHPSESSID": session_id,
+            "REMEMBERME": remember_me
+        })
+
+        return session_id, remember_me
+
 
     async def _make_request(self, **kwargs) -> Optional[Response]:
         response = await self.session.request(**kwargs)

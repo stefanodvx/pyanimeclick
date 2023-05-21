@@ -4,10 +4,24 @@ from .enums import TitleCategory, TitleType
 import re
 
 BASE_URL = "https://www.animeclick.it"
+
+LOGIN_URL = BASE_URL + "/login_check"
 TITLE_PAGE = BASE_URL + "/anime/{}/_"
 SEARCH_PAGE = BASE_URL + "/cerca"
 
 COVER_PATTERN = r"(?P<name>\/.+)(?P<ext>\.\w+)$"
+
+COOKIES = {
+    "AC_SCREEN_RESOLUTION": "1920x1080",
+    "AC_VIEWPORT_RESOLUTION": "629x588",
+    "ac_campaign": "show",
+    "device_view": "full",
+    "AC_EU_COOKIE_LAW_CONSENT": "Y"
+}
+
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
+}
 
 title_type_mapping = {
     "animazione": TitleType.ANIME,
