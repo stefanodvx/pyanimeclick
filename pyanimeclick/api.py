@@ -51,8 +51,11 @@ class AnimeClick:
         results = []
 
         soup = BeautifulSoup(response.text, "lxml")
-        tab = soup.find("h3", {"id": "type-opera"}).find_next("div")
-        divs = tab.find_all("div", {"class": "col-xs-12 col-sm-12 col-md-6 col-lg-4"})
+        tab = soup.find("h3", {"id": "type-opera"})
+        if not tab:
+            return results
+        tab_div = tab.find_next("div")
+        divs = tab_div.find_all("div", {"class": "col-xs-12 col-sm-12 col-md-6 col-lg-4"})
 
         for div in divs:
             result = self.parser.parse_search_result(div)

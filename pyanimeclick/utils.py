@@ -17,7 +17,7 @@ title_type_mapping = {
 }
 
 title_category_mapping = {
-    "film": TitleCategory.FILM,
+    "film": TitleCategory.MOVIE,
     "serie tv": TitleCategory.TV,
     "shounen": TitleCategory.SHOUNEN,
     "serie oav": TitleCategory.OAV,
@@ -25,6 +25,9 @@ title_category_mapping = {
     "comics americano": TitleCategory.AMERICAN_COMICS,
     "shoujo": TitleCategory.SHOUJO,
     "romanzo": TitleCategory.ROMANCE,
+    "pubblico adulto": TitleCategory.MATURE,
+    "boys love": TitleCategory.BOYS_LOVE,
+    "hentai": TitleCategory.HENTAI
 }
 
 def find_matchin_tag(

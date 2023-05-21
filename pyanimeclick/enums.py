@@ -8,12 +8,15 @@ class TitleType(Enum):
     UNKNOWN = auto()
 
 class TitleCategory(Enum):
-    FILM = auto()
+    MOVIE = auto()
     TV = auto()
     SHOUNEN = auto()
     OAV = auto()
     LIGHT_NOVEL = auto()
     ROMANCE = auto()
     AMERICAN_COMICS = auto()
+    BOYS_LOVE = auto()
     SHOUJO = auto()
+    MATURE = auto()
+    HENTAI = auto()
     UNKNOWN = auto()
