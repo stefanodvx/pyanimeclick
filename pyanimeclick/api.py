@@ -39,6 +39,7 @@ class AnimeClick:
         )
 
         print(response.cookies)
+        print(response.headers)
 
         session_id = response.cookies.get("PHPSESSID")
         remember_me = response.cookies.get("REMEMBERME")
