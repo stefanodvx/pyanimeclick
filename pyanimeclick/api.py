@@ -30,7 +30,7 @@ class AnimeClick:
     async def login(self, username: str, password: str):
         response = await self._make_request(
             method="POST", url=LOGIN_URL,
-            query={
+            data={
                 "_username": username,
                 "_password": password,
                 "_rememberme": "on",
