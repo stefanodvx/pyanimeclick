@@ -12,7 +12,7 @@ import logging
 import httpx
 
 class AnimeClick:
-    def __init__(self):
+    def __init__(self, session_id: str = None):
         self.session = httpx.AsyncClient(
             headers={
                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
@@ -22,7 +22,8 @@ class AnimeClick:
                 "AC_VIEWPORT_RESOLUTION": "629x588",
                 "ac_campaign": "show",
                 "device_view": "full",
-                "AC_EU_COOKIE_LAW_CONSENT": "Y"
+                "AC_EU_COOKIE_LAW_CONSENT": "Y",
+                "PHPSESSID": session_id
             }, follow_redirects=True, timeout=10
         )
         self.logger = logging.getLogger("pyanimeclick.main")
