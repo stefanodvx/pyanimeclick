@@ -37,6 +37,9 @@ class AnimeClick:
                 "_csrf_token": "",
             }
         )
+
+        print(response.cookies)
+
         session_id = response.cookies.get("PHPSESSID")
         remember_me = response.cookies.get("REMEMBERME")
 
