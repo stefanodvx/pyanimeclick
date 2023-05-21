@@ -40,7 +40,7 @@ class AnimeClick:
         print(r.headers)
 
         # Login and get REMEMBERME
-        await self._make_request(
+        r = await self._make_request(
             method="POST", url=LOGIN_CHECK_PAGE,
             headers=LOGIN_HEADERS,
             data={
@@ -51,7 +51,9 @@ class AnimeClick:
             }
         )
 
-        print(self.session.cookies)
+        print(r.text)
+        print(r.headers)
+        print(r.cookies)
 
         return
 
