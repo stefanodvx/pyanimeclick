@@ -1,4 +1,9 @@
 from dataclasses import dataclass
+from typing import Optional
+
+from .misc import Cover
+
+from ..enums import TitleCategory, TitleType
 
 @dataclass
 class QuerySearch:
@@ -10,8 +15,9 @@ class QuerySearch:
 class SearchResult:
     title: str
     url: str
+    path: str
     id: int
-    year: int
-    category: str
-    thumb: str
-    type: str
+    year: Optional[int]
+    cover: "Cover"
+    category: "TitleCategory"
+    type: "TitleType"

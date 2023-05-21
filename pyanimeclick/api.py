@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 from httpx._models import Response
 from typing import Optional
 
-from .types import SearchResult
+from .types import QuerySearch
 from .errors import InvalidCode, RequestError
 from .parser import Parser
 
@@ -43,25 +43,25 @@ class AnimeClick:
         
         return response
 
-    async def search(self, query: str) -> Optional[list[SearchResult]]:
+    async def search(self, query: str) -> Optional["QuerySearch"]:
         response = await self._make_request(
             method="GET", url=SEARCH_PAGE,
             params={"name": query}
         )
         results = []
-
         soup = BeautifulSoup(response.text, "lxml")
         tab = soup.find("h3", {"id": "type-opera"})
-        if not tab:
-            return results
-        tab_div = tab.find_next("div")
-        divs = tab_div.find_all("div", {"class": "col-xs-12 col-sm-12 col-md-6 col-lg-4"})
-
-        for div in divs:
-            result = self.parser.parse_search_result(div)
-            results.append(result)
-
-        return results
+        if tab:
+            tab_div = tab.find_next("div")
+            divs = tab_div.find_all("div", {"class": "col-xs-12 col-sm-12 col-md-6 col-lg-4"})
+            for div in divs:
+                result = self.parser.parse_search_result(div)
+                results.append(result)
+        return QuerySearch(
+            query=query,
+            total=len(results),
+            results=results
+        )
 
     # async def get_anime(self, id: int):
     #     r = await self._make_request(

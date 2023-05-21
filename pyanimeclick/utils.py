@@ -62,6 +62,14 @@ def get_cover(path: str):
     original_cover = resolve_path(path)
     return hd_cover, original_cover
 
+def url_to_id(url: str) -> int:
+    # https://www.animeclick.it/live/7430/attack-on-titan-live-action
+    splitted_url = url.split("/")
+    for part in splitted_url:
+        if not part.isdigit():
+            continue
+        return int(part)
+
 def string_to_title_type(string: str) -> TitleType:
     string = string.lower().strip()
     return title_type_mapping.get(string, TitleType.UNKNOWN)
