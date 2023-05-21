@@ -29,7 +29,7 @@ class AnimeClick:
 
     async def login(self, username: str, password: str):
         response = await self._make_request(
-            method="POST", url=LOGIN_URL,
+            method="POST", url=LOGIN_URL.replace("https", "http"),
             data={
                 "_username": username,
                 "_password": password,
@@ -37,9 +37,6 @@ class AnimeClick:
                 "_csrf_token": "",
             }
         )
-
-        print(response.cookies)
-        print(response.headers)
 
         session_id = response.cookies.get("PHPSESSID")
         remember_me = response.cookies.get("REMEMBERME")
@@ -55,6 +52,9 @@ class AnimeClick:
     async def _make_request(self, **kwargs) -> Optional[Response]:
         response = await self.session.request(**kwargs)
         code = response.status_code
+
+        print(response.cookies)
+        print(response.headers)
 
         if code != 200:
             raise RequestError(f"[{code}] Response: {response.text}")
