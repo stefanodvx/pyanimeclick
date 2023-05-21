@@ -2,18 +2,17 @@ from dataclasses import dataclass
 from typing import Optional
 
 from .misc import Cover
-from .obj import Object
 
 from ..enums import TitleCategory, TitleType
 
 @dataclass
-class QuerySearch(Object):
+class QuerySearch:
     query: str
     total: int
     results: list["SearchResult"]
 
 @dataclass
-class SearchResult(Object):
+class SearchResult:
     title: str
     url: str
     path: str
