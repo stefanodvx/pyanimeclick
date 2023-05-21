@@ -1,6 +1,8 @@
 from dataclasses import dataclass
 
+from .obj import Object
+
 @dataclass
-class Cover:
+class Cover(Object):
     resolved: str
     original: str
