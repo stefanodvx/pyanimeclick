@@ -18,9 +18,16 @@ from .utils import (
 
 import logging
 import httpx
+import json
+import os
 
 class AnimeClick:
-    def __init__(self):
+    def __init__(
+        self,
+        session_file: str = "animeclick.session.json"
+    ):  
+        self.session_file = session_file
+
         self.session = httpx.AsyncClient(
             headers=HEADERS,
             cookies=COOKIES,
@@ -30,13 +37,40 @@ class AnimeClick:
         self.logger = logging.getLogger("pyanimeclick.main")
         self.parser = Parser()
 
-    async def login(self, username: str, password: str):
+    def _check_session(self):
+        return os.path.exists(self.session_file)
+
+    def _store_session(self):
+        with open(self.session_file, "w+") as f:
+            f.write(json.dumps({
+                "PHPSESSID": self.session.cookies.get("PHPSESSID"),
+                "REMEMBERME": self.session.cookies.get("REMEMBERME")
+            }), indent=4)
+        self.logger.debug("Stored session file.")
+
+    def _load_session(self):
+        with open(self.session_file) as f:
+            content = json.loads(f.read())
+        self.session.cookies.update(content)
+        self.logger.debug("Loaded session file.")
+        return True
+
+    async def login(
+        self,
+        username: str,
+        password: str,
+        use_session_file: bool = False
+    ):
+        if use_session_file:
+            if self._check_session():
+                return self._load_session()
         # Get PHPSESSID (session_id) and CSRF Token
         response = await self._make_request(
             method="POST", url=LOGIN_PAGE,
             headers=LOGIN_HEADERS
         )
         csrf_token = parse_csrf_token(response.text)
+        self.logger.debug(f"CSRF Token: {csrf_token}")
         # Login and get REMEMBERME
         await self._make_request(
             method="POST", url=LOGIN_CHECK_PAGE,
@@ -48,6 +82,9 @@ class AnimeClick:
                 "_csrf_token": csrf_token,
             }
         )
+        if use_session_file:
+            self._store_session()
+        self.logger.debug("Logged in successfully.")
         return True
 
     async def _make_request(self, **kwargs) -> Optional[Response]:
