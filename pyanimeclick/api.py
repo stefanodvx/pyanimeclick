@@ -38,7 +38,6 @@ class AnimeClick:
         )
         csrf_token = parse_csrf_token(response.text)
         # Login and get REMEMBERME
-        print(csrf_token)
         r = await self._make_request(
             method="POST", url=LOGIN_CHECK_PAGE,
             headers=LOGIN_HEADERS,
@@ -50,6 +49,8 @@ class AnimeClick:
             }
         )
         print(r.text)
+        print(r.cookies)
+        print(r.headers)
         return True
 
     async def _make_request(self, **kwargs) -> Optional[Response]:
