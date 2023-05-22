@@ -11,6 +11,7 @@ TITLE_PAGE = BASE_URL + "/anime/{}/_"
 SEARCH_PAGE = BASE_URL + "/cerca"
 
 COVER_PATTERN = r"(?P<name>\/.+)(?P<ext>\.\w+)$"
+TOKEN_PATTERN = r'name="_csrf_token" value="(?P<token>[^"]+")'
 
 COOKIES = {
     "AC_SCREEN_RESOLUTION": "1920x1080",
@@ -103,3 +104,9 @@ def string_to_title_type(string: str) -> TitleType:
 def string_to_title_category(string: str) -> TitleCategory:
     string = string.lower().strip()
     return title_category_mapping.get(string, TitleCategory.UNKNOWN)
+
+def parse_csrf_token(page: str):
+    # name=\"_csrf_token\" value=\"-VMkjKrcNYaR4AHuuEglPVHUsJ1hV8qsC8u3kIoS89I\"
+    match = re.search(TOKEN_PATTERN, page.replace("\\", ""))
+    if match:
+        return match.group("token")

@@ -6,6 +6,7 @@ from .types import QuerySearch
 from .errors import InvalidCode, RequestError
 from .parser import Parser
 
+from .utils import parse_csrf_token
 from .utils import (
     HEADERS,
     LOGIN_CHECK_PAGE,
@@ -30,33 +31,24 @@ class AnimeClick:
         self.parser = Parser()
 
     async def login(self, username: str, password: str):
-        # Get PHPSESSID (session_id)
-        r = await self._make_request(
+        # Get PHPSESSID (session_id) and CSRF Token
+        response = await self._make_request(
             method="POST", url=LOGIN_PAGE,
             headers=LOGIN_HEADERS
         )
-
-        print(r.cookies)
-        print(r.headers)
-
+        csrf_token = parse_csrf_token(response.text)
         # Login and get REMEMBERME
-        r = await self._make_request(
+        await self._make_request(
             method="POST", url=LOGIN_CHECK_PAGE,
             headers=LOGIN_HEADERS,
             data={
                 "_username": username,
                 "_password": password,
                 "_rememberme": "on",
-                "_csrf_token": "",
+                "_csrf_token": csrf_token,
             }
         )
-
-        print(r.text)
-        print(r.headers)
-        print(r.cookies)
-
-        return
-
+        return True
 
     async def _make_request(self, **kwargs) -> Optional[Response]:
         response = await self.session.request(**kwargs)
