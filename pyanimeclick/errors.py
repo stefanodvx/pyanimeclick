@@ -6,3 +6,6 @@ class InvalidCode(AnimeClickError):
 
 class RequestError(AnimeClickError):
     pass
+
+class MissingCSRFToken(AnimeClickError):
+    pass

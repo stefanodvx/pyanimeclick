@@ -1,20 +1,11 @@
-from bs4 import BeautifulSoup
 from httpx._models import Response
 from typing import Optional
 
-from .types import QuerySearch
 from .errors import InvalidCode, RequestError
+from .methods import Methods
 from .parser import Parser
 
-from .utils import parse_csrf_token
-from .utils import (
-    HEADERS,
-    LOGIN_CHECK_PAGE,
-    LOGIN_PAGE,
-    SEARCH_PAGE,
-    LOGIN_HEADERS,
-    COOKIES
-)
+from .utils import HEADERS, COOKIES
 
 import logging
 import httpx
@@ -23,7 +14,7 @@ import os
 
 log = logging.getLogger(__name__)
 
-class AnimeClick:
+class AnimeClick(Methods):
     def __init__(
         self,
         session_file: str = "animeclick.session.json"
@@ -56,38 +47,6 @@ class AnimeClick:
         log.debug("Loaded session file.")
         return True
 
-    async def login(
-        self,
-        username: str,
-        password: str,
-        use_session_file: bool = False
-    ):
-        if use_session_file:
-            if self._check_session():
-                return self._load_session()
-        # Get PHPSESSID (session_id) and CSRF Token
-        response = await self._make_request(
-            method="POST", url=LOGIN_PAGE,
-            headers=LOGIN_HEADERS
-        )
-        csrf_token = parse_csrf_token(response.text)
-        log.debug(f"CSRF Token: {csrf_token}")
-        # Login and get REMEMBERME
-        await self._make_request(
-            method="POST", url=LOGIN_CHECK_PAGE,
-            headers=LOGIN_HEADERS,
-            data={
-                "_username": username,
-                "_password": password,
-                "_remember_me": "on",
-                "_csrf_token": csrf_token,
-            }
-        )
-        if use_session_file:
-            self._store_session()
-        log.debug("Logged in successfully.")
-        return True
-
     async def _make_request(self, **kwargs) -> Optional[Response]:
         response = await self.session.request(**kwargs)
         code = response.status_code
@@ -102,26 +61,6 @@ class AnimeClick:
             raise RequestError("Couldn't bypass ADs. If this error persists, open an issue on GitHub.")
         
         return response
-
-    async def search(self, query: str) -> Optional["QuerySearch"]:
-        response = await self._make_request(
-            method="GET", url=SEARCH_PAGE,
-            params={"name": query}
-        )
-        results = []
-        soup = BeautifulSoup(response.text, "lxml")
-        tab = soup.find("h3", {"id": "type-opera"})
-        if tab:
-            tab_div = tab.find_next("div")
-            divs = tab_div.find_all("div", {"class": "col-xs-12 col-sm-12 col-md-6 col-lg-4"})
-            for div in divs:
-                result = self.parser.parse_search_result(div)
-                results.append(result)
-        return QuerySearch(
-            query=query,
-            total=len(results),
-            results=results
-        )
 
     # async def get_anime(self, id: int):
     #     r = await self._make_request(

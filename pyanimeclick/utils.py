@@ -1,5 +1,8 @@
-from bs4 import BeautifulSoup
 from .enums import TitleCategory, TitleType
+from .errors import MissingCSRFToken
+
+from bs4 import BeautifulSoup, NavigableString, Tag
+from typing import Optional, Union
 
 import re
 
@@ -62,7 +65,7 @@ def find_matchin_tag(
     name: str,
     pattern: re.Pattern,
     **kwargs
-):
+) -> Union[tuple[Union[Tag, NavigableString], Optional[re.Match]], tuple[None, None]]:
     tag = soup.find(name, **kwargs, string=pattern)
     if tag:
         match = pattern.search(tag.string)
@@ -72,7 +75,7 @@ def find_matchin_tag(
 def resolve_path(path: str) -> str:
     return BASE_URL + path
 
-def get_cover(path: str):
+def get_cover(path: str) -> Union[tuple(str, str), tuple(None, None)]:
     def remove_suffix(name: str):
         suffixes = ("-thumb-mini", "-thumb", "-mini")
         for suffix in suffixes:
@@ -105,8 +108,9 @@ def string_to_title_category(string: str) -> TitleCategory:
     string = string.lower().strip()
     return title_category_mapping.get(string, TitleCategory.UNKNOWN)
 
-def parse_csrf_token(page: str):
+def parse_csrf_token(page: str) -> Optional[str]:
     # name=\"_csrf_token\" value=\"-VMkjKrcNYaR4AHuuEglPVHUsJ1hV8qsC8u3kIoS89I\"
     match = re.search(TOKEN_PATTERN, page.replace("\\", ""))
-    if match:
-        return match.group("token")
+    if not match:
+        raise MissingCSRFToken
+    return match.group("token")
