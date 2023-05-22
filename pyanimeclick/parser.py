@@ -14,9 +14,11 @@ from .utils import (
 import logging
 import re
 
+log = logging.getLogger(__name__)
+
 class Parser:
     def __init__(self):
-        self.logger = logging.getLogger("pyanimeclick.parser")
+        pass
 
     def parse_search_result(self, tag: Tag) -> SearchResult:
         data = {}

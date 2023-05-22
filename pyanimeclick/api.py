@@ -21,6 +21,8 @@ import httpx
 import json
 import os
 
+log = logging.getLogger(__name__)
+
 class AnimeClick:
     def __init__(
         self,
@@ -34,7 +36,6 @@ class AnimeClick:
             follow_redirects=True,
             timeout=10
         )
-        self.logger = logging.getLogger("pyanimeclick.main")
         self.parser = Parser()
 
     def _check_session(self):
@@ -46,13 +47,13 @@ class AnimeClick:
                 "PHPSESSID": self.session.cookies.get("PHPSESSID"),
                 "REMEMBERME": self.session.cookies.get("REMEMBERME")
             }, indent=4))
-        self.logger.debug("Stored session file.")
+        log.debug("Stored session file.")
 
     def _load_session(self):
         with open(self.session_file) as f:
             content = json.loads(f.read())
         self.session.cookies.update(content)
-        self.logger.debug("Loaded session file.")
+        log.debug("Loaded session file.")
         return True
 
     async def login(
@@ -70,7 +71,7 @@ class AnimeClick:
             headers=LOGIN_HEADERS
         )
         csrf_token = parse_csrf_token(response.text)
-        self.logger.debug(f"CSRF Token: {csrf_token}")
+        log.debug(f"CSRF Token: {csrf_token}")
         # Login and get REMEMBERME
         await self._make_request(
             method="POST", url=LOGIN_CHECK_PAGE,
@@ -84,7 +85,7 @@ class AnimeClick:
         )
         if use_session_file:
             self._store_session()
-        self.logger.debug("Logged in successfully.")
+        log.debug("Logged in successfully.")
         return True
 
     async def _make_request(self, **kwargs) -> Optional[Response]:
