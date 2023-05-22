@@ -3,7 +3,6 @@ from typing import Optional
 
 from .errors import InvalidCode, RequestError
 from .methods import Methods
-from .parser import Parser
 
 from .utils import HEADERS, COOKIES
 
@@ -27,20 +26,20 @@ class AnimeClick(Methods):
             follow_redirects=True,
             timeout=10
         )
-        self.parser = Parser()
 
     def _check_session(self):
         return os.path.exists(self.session_file)
 
-    def _store_session(self):
+    def _store_session(self) -> Optional[bool]:
         with open(self.session_file, "w+") as f:
             f.write(json.dumps({
                 "PHPSESSID": self.session.cookies.get("PHPSESSID"),
                 "REMEMBERME": self.session.cookies.get("REMEMBERME")
             }, indent=4))
         log.debug("Stored session file.")
+        return True
 
-    def _load_session(self):
+    def _load_session(self) -> Optional[bool]:
         with open(self.session_file) as f:
             content = json.loads(f.read())
         self.session.cookies.update(content)

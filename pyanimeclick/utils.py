@@ -60,7 +60,20 @@ title_category_mapping = {
     "hentai": TitleCategory.HENTAI
 }
 
-def find_matchin_tag(
+def find_next_tag(
+    parent: Tag,
+    property: str,
+    *args,
+    **kwargs
+):
+    if not parent:
+       return
+    next_tag = parent.find_next(*args, **kwargs)
+    if not next_tag:
+        return
+    return getattr(next_tag, property, None)
+
+def find_matching_tag(
     soup: BeautifulSoup,
     name: str,
     pattern: re.Pattern,
@@ -71,6 +84,9 @@ def find_matchin_tag(
         match = pattern.search(tag.string)
         return tag, match
     return None, None
+
+def i_pattern(pattern: str) -> re.Pattern:
+    return re.compile(pattern, flags=re.I)
 
 def resolve_path(path: str) -> str:
     return BASE_URL + path
