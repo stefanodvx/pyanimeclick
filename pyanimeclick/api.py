@@ -45,7 +45,7 @@ class AnimeClick:
             f.write(json.dumps({
                 "PHPSESSID": self.session.cookies.get("PHPSESSID"),
                 "REMEMBERME": self.session.cookies.get("REMEMBERME")
-            }), indent=4)
+            }, indent=4))
         self.logger.debug("Stored session file.")
 
     def _load_session(self):
