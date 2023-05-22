@@ -1,5 +1,3 @@
-from ..api import AnimeClick
-
 from ..utils import parse_csrf_token
 from ..utils import (
     LOGIN_PAGE,
@@ -9,13 +7,14 @@ from ..utils import (
 
 from typing import Optional
 
+import pyanimeclick
 import logging
 
 log = logging.getLogger(__name__)
 
 class Login:
     async def login(
-        self: "AnimeClick",
+        self: "pyanimeclick.AnimeClick",
         username: str,
         password: str,
         use_session_file: bool = False

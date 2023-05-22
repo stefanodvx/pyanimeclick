@@ -1,4 +1,3 @@
-from ..api import AnimeClick
 from ..types import QuerySearch
 
 from ..utils import SEARCH_PAGE
@@ -6,13 +5,14 @@ from ..utils import SEARCH_PAGE
 from typing import Optional
 from bs4 import BeautifulSoup
 
+import pyanimeclick
 import logging
 
 log = logging.getLogger(__name__)
 
 class Search:
     async def search(
-        self: "AnimeClick",
+        self: "pyanimeclick.AnimeClick",
         query: str
     ) -> Optional["QuerySearch"]:
         response = await self._make_request(
