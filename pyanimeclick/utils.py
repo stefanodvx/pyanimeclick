@@ -75,7 +75,7 @@ def find_matchin_tag(
 def resolve_path(path: str) -> str:
     return BASE_URL + path
 
-def get_cover(path: str) -> Union[tuple(str, str), tuple(None, None)]:
+def get_cover(path: str) -> Union[tuple[str, str], tuple[None, None]]:
     def remove_suffix(name: str):
         suffixes = ("-thumb-mini", "-thumb", "-mini")
         for suffix in suffixes:
