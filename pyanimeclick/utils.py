@@ -11,7 +11,7 @@ TITLE_PAGE = BASE_URL + "/anime/{}/_"
 SEARCH_PAGE = BASE_URL + "/cerca"
 
 COVER_PATTERN = r"(?P<name>\/.+)(?P<ext>\.\w+)$"
-TOKEN_PATTERN = r'name="_csrf_token" value="(?P<token>[^"]+")'
+TOKEN_PATTERN = r'name="_csrf_token" value="(?P<token>[^"]+)"'
 
 COOKIES = {
     "AC_SCREEN_RESOLUTION": "1920x1080",
