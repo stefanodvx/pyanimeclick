@@ -19,5 +19,7 @@ class GetTitle:
             method="GET",
             url=TITLE_PAGE.format(str(id)),
         )
+        return response
+
         soup = BeautifulSoup(response.text, "lxml")
         return Title._parse(soup)
