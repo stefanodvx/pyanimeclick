@@ -27,7 +27,9 @@ COOKIES = {
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
 
 HEADERS = {
-    "user-agent": USER_AGENT
+    "user-agent": USER_AGENT,
+    "accept": "application/json",
+    "x-requested-with": "XMLHttpRequest",
 }
 LOGIN_HEADERS = {
     "user-agnet": USER_AGENT,
@@ -37,27 +39,6 @@ LOGIN_HEADERS = {
     "origin": "https://www.animeclick.it",
     "referer": "https://www.animeclick.it/",
     "x-requested-with": "XMLHttpRequest",
-}
-
-title_type_mapping = {
-    "animazione": TitleType.ANIME,
-    "fumetto": TitleType.MANGA,
-    "novel": TitleType.NOVEL,
-    "live action": TitleType.LIVE_ACTION
-}
-
-title_category_mapping = {
-    "film": TitleCategory.MOVIE,
-    "serie tv": TitleCategory.TV,
-    "shounen": TitleCategory.SHOUNEN,
-    "serie oav": TitleCategory.OAV,
-    "light novel": TitleCategory.LIGHT_NOVEL,
-    "comics americano": TitleCategory.AMERICAN_COMICS,
-    "shoujo": TitleCategory.SHOUJO,
-    "romanzo": TitleCategory.ROMANCE,
-    "pubblico adulto": TitleCategory.MATURE,
-    "boys love": TitleCategory.BOYS_LOVE,
-    "hentai": TitleCategory.HENTAI
 }
 
 def find_next_tag(
@@ -117,12 +98,10 @@ def url_to_id(url: str) -> int:
         return int(part)
 
 def string_to_title_type(string: str) -> TitleType:
-    string = string.lower().strip()
-    return title_type_mapping.get(string, TitleType.UNKNOWN)
+    return TitleType(string.lower().strip())
 
 def string_to_title_category(string: str) -> TitleCategory:
-    string = string.lower().strip()
-    return title_category_mapping.get(string, TitleCategory.UNKNOWN)
+    return TitleCategory(string.lower().strip())
 
 def parse_csrf_token(page: str) -> Optional[str]:
     # name=\"_csrf_token\" value=\"-VMkjKrcNYaR4AHuuEglPVHUsJ1hV8qsC8u3kIoS89I\"

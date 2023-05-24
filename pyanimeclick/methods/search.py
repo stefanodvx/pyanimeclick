@@ -20,6 +20,9 @@ class Search:
             method="GET", url=SEARCH_PAGE,
             params={"name": query}
         )
+
+        return response
+
         results = []
         soup = BeautifulSoup(response.text, "lxml")
         tab = soup.find("h3", {"id": "type-opera"})

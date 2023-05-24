@@ -43,18 +43,18 @@ class SearchResult:
         resolved_cover, original_cover = get_cover(img_path)
         _, match = find_matching_tag(
             tag, "li",
-            pattern=re.compile(r"tipo opera:\s*([\w\s]+)", flags=re.I)
+            pattern=i_pattern(r"tipo opera:\s*([\w\s]+)")
         )
         data["type"] = string_to_title_type(match.group(1)) \
             if match else TitleType.UNKNOWN
         _, match = find_matching_tag(
             tag, "li",
-            pattern=re.compile(r"anno inizio:\s*(\d{4})", flags=re.I)
+            pattern=i_pattern(r"anno inizio:\s*(\d{4})")
         )
         data["year"] = int(match.group(1)) if match else None
         _, match = find_matching_tag(
             tag, "li",
-            pattern=re.compile(r"categoria:\s*([\w\s]+)", flags=re.I)
+            pattern=i_pattern(r"categoria:\s*([\w\s]+)")
         )
         data["category"] = string_to_title_category(match.group(1)) \
             if match else TitleCategory.UNKNOWN

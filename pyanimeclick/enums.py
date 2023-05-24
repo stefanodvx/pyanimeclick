@@ -1,22 +1,30 @@
 from enum import Enum, auto
 
 class TitleType(Enum):
-    ANIME = auto()
-    MANGA = auto()
-    NOVEL = auto()
-    LIVE_ACTION = auto()
+    ANIME = "animazione"
+    MANGA = "fumetto"
+    NOVEL = "novel"
+    LIVE_ACTION = "live action"
     UNKNOWN = auto()
 
+    @classmethod
+    def _missing_(cls, _):
+        return cls.UNKNOWN
+
 class TitleCategory(Enum):
-    MOVIE = auto()
-    TV = auto()
-    SHOUNEN = auto()
-    OAV = auto()
-    LIGHT_NOVEL = auto()
-    ROMANCE = auto()
-    AMERICAN_COMICS = auto()
-    BOYS_LOVE = auto()
-    SHOUJO = auto()
-    MATURE = auto()
-    HENTAI = auto()
+    MOVIE = "film"
+    TV = "serie tv"
+    SHOUNEN = "shounen"
+    OAV = "serie oav"
+    LIGHT_NOVEL = "light novel"
+    ROMANCE = "romanzo"
+    AMERICAN_COMICS = "comics americano"
+    BOYS_LOVE = "boys love"
+    SHOUJO = "shoujo"
+    MATURE = "pubblico adulto"
+    HENTAI = "hentai"
     UNKNOWN = auto()
+
+    @classmethod
+    def _missing_(cls, _):
+        return cls.UNKNOWN
