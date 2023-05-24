@@ -43,7 +43,7 @@ class SearchResult:
         title_type = string_to_title_type(result["payload"]["tipo_opera"])
         title_category = [
             string_to_title_category(part)
-            for part in result["payload"]["tipo_opera"].split(",")
+            for part in result["payload"]["categoria"].split(",")
         ]
         title_year = int(result["payload"]["anno_inizio"])
 
