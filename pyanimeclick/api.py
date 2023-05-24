@@ -4,7 +4,7 @@ from typing import Optional
 from .errors import InvalidCode, RequestError
 from .methods import Methods
 
-from .utils import HEADERS, COOKIES
+from .utils import API_HEADERS, COOKIES
 
 import logging
 import httpx
@@ -21,7 +21,7 @@ class AnimeClick(Methods):
         self.session_file = session_file
 
         self.session = httpx.AsyncClient(
-            headers=HEADERS,
+            headers=API_HEADERS,
             cookies=COOKIES,
             follow_redirects=True,
             timeout=10

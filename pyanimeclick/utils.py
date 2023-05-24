@@ -26,18 +26,14 @@ COOKIES = {
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36"
 
-HEADERS = {
+BASE_HEADERS = {
     "user-agent": USER_AGENT,
-    "accept": "application/json",
-    "x-requested-with": "XMLHttpRequest",
-}
-LOGIN_HEADERS = {
-    "user-agnet": USER_AGENT,
-    "authority": "www.animeclick.it",
-    "accept": "application/json, text/javascript, */*; q=0.01",
-    "accept-language": "it-IT,it;q=0.9,en;q=0.8,en-US;q=0.7,it-AD;q=0.6",
     "origin": "https://www.animeclick.it",
     "referer": "https://www.animeclick.it/",
+}
+
+API_HEADERS = BASE_HEADERS | {
+    "accept": "application/json",
     "x-requested-with": "XMLHttpRequest",
 }
 

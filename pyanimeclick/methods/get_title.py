@@ -1,6 +1,6 @@
 from ..types import Title
 
-from ..utils import TITLE_PAGE
+from ..utils import BASE_HEADERS, TITLE_PAGE
 
 from typing import Optional
 from bs4 import BeautifulSoup
@@ -18,8 +18,7 @@ class GetTitle:
         response = await self._make_request(
             method="GET",
             url=TITLE_PAGE.format(str(id)),
+            headers=BASE_HEADERS,
         )
-        return response
-
         soup = BeautifulSoup(response.text, "lxml")
         return Title._parse(soup)

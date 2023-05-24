@@ -20,27 +20,43 @@ import re
 
 @dataclass
 class Title:
+    header_title: str
     original_title: str
     english_title: str
     kanji_title: str
+    nationality: str
 
     @staticmethod
     def _parse(page: BeautifulSoup) -> "Title":
-        data = {}
-        
-        data["original_title"] = find_next_tag(
+        header_title = page.find("h1", {"itemprop": "name"}).string
+
+        original_title = find_next_tag(
             parent=page.find(string=i_pattern("Titolo originale")),
             property="string", name="span"
         )
 
-        data["english_title"] = find_next_tag(
+        english_title = find_next_tag(
             parent=page.find(string=i_pattern("Titolo inglese")),
             property="string", name="span"
         )
 
-        data["kanji_title"] = find_next_tag(
+        kanji_title = find_next_tag(
             parent=page.find(string=i_pattern("Titolo kanji")),
             property="string", name="span"
         )
+
+        nationality = find_next_tag(
+            parent=page.find(string=i_pattern("Nazionalità")),
+            property="string", name="span",
+            attrs={"itemprop": "name"}
+        )
+
+        data = {
+            "header_title": header_title,
+            "original_title": original_title,
+            "enlighs_title": english_title,
+            "kanji_title": kanji_title,
+            "nationality": nationality,
+        }
 
         return Title(**data)

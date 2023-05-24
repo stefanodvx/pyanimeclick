@@ -1,7 +1,6 @@
 from ..utils import parse_csrf_token
 from ..utils import (
     LOGIN_PAGE,
-    LOGIN_HEADERS,
     LOGIN_CHECK_PAGE
 )
 
@@ -24,15 +23,13 @@ class Login:
                 return self._load_session()
         # Get PHPSESSID (session_id) and CSRF Token
         response = await self._make_request(
-            method="POST", url=LOGIN_PAGE,
-            headers=LOGIN_HEADERS
+            method="POST", url=LOGIN_PAGE
         )
         csrf_token = parse_csrf_token(response.text)
         log.debug(f"CSRF Token: {csrf_token}")
         # Login and get REMEMBERME
         await self._make_request(
             method="POST", url=LOGIN_CHECK_PAGE,
-            headers=LOGIN_HEADERS,
             data={
                 "_username": username,
                 "_password": password,
