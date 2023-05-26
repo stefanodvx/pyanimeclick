@@ -28,8 +28,6 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 
 BASE_HEADERS = {
     "user-agent": USER_AGENT,
-    "origin": "https://www.animeclick.it",
-    "referer": "https://www.animeclick.it/",
 }
 
 API_HEADERS = BASE_HEADERS | {
