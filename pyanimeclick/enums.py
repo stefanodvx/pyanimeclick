@@ -7,6 +7,16 @@ class Nationality(Enum):
     @classmethod
     def _missing_(cls, _):
         return cls.UNKNOWN
+    
+class Status(Enum):
+    AIRING = "in corso"
+    PAUSED = "in pausa"
+    COMPLETED = "completato"
+    UNKNOWN = auto()
+
+    @classmethod
+    def _missing_(cls, _):
+        return cls.UNKNOWN
 
 class TitleType(Enum):
     ANIME = "animazione"

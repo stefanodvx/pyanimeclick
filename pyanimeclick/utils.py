@@ -3,6 +3,7 @@ from .errors import MissingCSRFToken
 
 from bs4 import BeautifulSoup, NavigableString, Tag
 from typing import Optional, Union
+from enum import Enum
 
 import re
 
@@ -121,14 +122,8 @@ def parse_year(strings: list[str]) -> Optional[int]:
         strings = list(strings)
     return keep_digits(strings[0])
 
-def string_to_nationality(string: str) -> Nationality:
-    return Nationality(string.lower().strip())
-
-def string_to_title_type(string: str) -> TitleType:
-    return TitleType(string.lower().strip())
-
-def string_to_title_category(string: str) -> TitleCategory:
-    return TitleCategory(string.lower().strip())
+def string_to_enum(string: str, enum: Enum) -> Enum:
+    return enum(string.lower().strip())
 
 def parse_csrf_token(page: str) -> Optional[str]:
     # name=\"_csrf_token\" value=\"-VMkjKrcNYaR4AHuuEglPVHUsJ1hV8qsC8u3kIoS89I\"
