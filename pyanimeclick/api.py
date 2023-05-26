@@ -21,7 +21,6 @@ class AnimeClick(Methods):
         self.session_file = session_file
 
         self.session = httpx.AsyncClient(
-            headers=API_HEADERS,
             cookies=COOKIES,
             follow_redirects=True,
             timeout=10

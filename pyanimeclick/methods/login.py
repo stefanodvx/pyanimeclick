@@ -1,5 +1,6 @@
-from ..utils import parse_csrf_token
-from ..utils import (
+from pyanimeclick.utils import parse_csrf_token
+from pyanimeclick.utils import (
+    API_HEADERS,
     LOGIN_PAGE,
     LOGIN_CHECK_PAGE
 )
@@ -23,14 +24,15 @@ class Login:
                 return self._load_session()
         # Get PHPSESSID (session_id) and CSRF Token
         response = await self._make_request(
-            method="POST", url=LOGIN_PAGE
+            method="POST", url=LOGIN_PAGE,
+            headers=API_HEADERS,
         )
         csrf_token = parse_csrf_token(response.text)
         log.debug(f"CSRF Token: {csrf_token}")
         # Login and get REMEMBERME
         await self._make_request(
             method="POST", url=LOGIN_CHECK_PAGE,
-            data={
+            headers=API_HEADERS, data={
                 "_username": username,
                 "_password": password,
                 "_remember_me": "on",

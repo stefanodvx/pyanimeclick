@@ -1,6 +1,5 @@
-from ..types import Title
-
-from ..utils import BASE_HEADERS, TITLE_PAGE
+from pyanimeclick.types import Title
+from pyanimeclick.utils import BASE_HEADERS, TITLE_PAGE
 
 from typing import Optional
 from bs4 import BeautifulSoup

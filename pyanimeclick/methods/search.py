@@ -1,9 +1,7 @@
-from ..types import QuerySearch, SearchResult
-
-from ..utils import SEARCH_PAGE
+from pyanimeclick.types import QuerySearch, SearchResult
+from pyanimeclick.utils import API_HEADERS, SEARCH_PAGE
 
 from typing import Optional
-from bs4 import BeautifulSoup
 
 import pyanimeclick
 import logging
@@ -19,7 +17,8 @@ class Search:
         log.debug(f"Query string: {query}")
         response = await self._make_request(
             method="GET", url=SEARCH_PAGE,
-            params={"name": query, "type": "opera"}
+            params={"name": query, "type": "opera"},
+            headers=API_HEADERS,
         )
         
         results = []
