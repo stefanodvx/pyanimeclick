@@ -20,5 +20,6 @@ class GetTitle:
             url=TITLE_PAGE.format(str(id)),
             headers=BASE_HEADERS,
         )
+        print(response.request.headers)
         soup = BeautifulSoup(response.text, "lxml")
         return Title._parse(soup)
