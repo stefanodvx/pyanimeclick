@@ -35,9 +35,26 @@ API_HEADERS = BASE_HEADERS | {
     "x-requested-with": "XMLHttpRequest",
 }
 
+def find_next_tags(
+    parent: Tag,
+    property: str = None,
+    *args,
+    **kwargs
+):
+    if not parent:
+        return []
+    tags = parent.find_all(*args, **kwargs)
+    if not tags:
+        return []
+    return [
+        getattr(tag, property, None)
+        if property else tag
+        for tag in tags
+    ]
+
 def find_next_tag(
     parent: Tag,
-    property: str,
+    property: str = None,
     *args,
     **kwargs
 ):
@@ -46,7 +63,7 @@ def find_next_tag(
     next_tag = parent.find_next(*args, **kwargs)
     if not next_tag:
         return
-    return getattr(next_tag, property, None)
+    return getattr(next_tag, property, None) if property else next_tag
 
 def find_matching_tag(
     soup: BeautifulSoup,
