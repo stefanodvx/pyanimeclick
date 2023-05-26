@@ -114,6 +114,8 @@ def keep_digits(string: str) -> int:
     return int(re.sub(r"[^\d]+", "", string))
 
 def parse_year(strings: list[str]):
+    if not isinstance(strings, list):
+        strings = list(strings)
     if len(strings) > 1:
         start, end = map(keep_digits, strings)
         return start, end
