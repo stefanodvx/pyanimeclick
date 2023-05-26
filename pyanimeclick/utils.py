@@ -38,6 +38,7 @@ API_HEADERS = BASE_HEADERS | {
 def find_next_tags(
     parent: Tag,
     property: str = None,
+    default: object = None,
     *args,
     **kwargs
 ):
@@ -47,7 +48,7 @@ def find_next_tags(
     if not tags:
         return []
     return [
-        getattr(tag, property, None)
+        getattr(tag, property, default)
         if property else tag
         for tag in tags
     ]
@@ -55,15 +56,16 @@ def find_next_tags(
 def find_next_tag(
     parent: Tag,
     property: str = None,
+    default: object = None,
     *args,
     **kwargs
 ):
     if not parent:
-       return
+       return default
     next_tag = parent.find_next(*args, **kwargs)
     if not next_tag:
-        return
-    return getattr(next_tag, property, None) if property else next_tag
+        return default
+    return getattr(next_tag, property, default) if property else next_tag
 
 def find_matching_tag(
     soup: BeautifulSoup,
