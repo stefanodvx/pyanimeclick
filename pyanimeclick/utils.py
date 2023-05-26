@@ -111,7 +111,10 @@ def url_to_id(url: str) -> int:
         return int(part)
     
 def keep_digits(string: str) -> int:
-    return int(re.sub(r"[^\d]+", "", string))
+    string = re.sub(r"[^\d]+", "", string)
+    if string.isdigit():
+        return int(string)
+    return
 
 def parse_year(strings: list[str]):
     if not isinstance(strings, list):
