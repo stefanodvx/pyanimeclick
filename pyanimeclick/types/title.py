@@ -28,6 +28,7 @@ class Title:
 
     @staticmethod
     def _parse(page: BeautifulSoup) -> "Title":
+        return page
         header_title = page.find("h1", {"itemprop": "name"}).string
 
         original_title = find_next_tag(

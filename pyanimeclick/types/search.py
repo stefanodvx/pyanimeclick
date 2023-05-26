@@ -24,7 +24,7 @@ class SearchResult:
     url: str
     path: str
     id: int
-    year: Optional[int]
+    year: int
     cover: "Cover"
     category: list["TitleCategory"]
     type: "TitleType"
