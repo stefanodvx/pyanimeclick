@@ -1,5 +1,22 @@
 from enum import Enum, auto
 
+
+class DubStatus(Enum):
+    UNLICENSED = "doppiaggio inedito"
+    UNKNOWN = auto()
+
+    @classmethod
+    def _missing_(cls, _):
+        return cls.UNKNOWN
+    
+class SubStatus(Enum):
+    UNLICENSED = "sottotitoli inedito"
+    UNKNOWN = auto()
+
+    @classmethod
+    def _missing_(cls, _):
+        return cls.UNKNOWN
+
 class Nationality(Enum):
     JAPAN = "giappone"
     UNKNOWN = auto()
