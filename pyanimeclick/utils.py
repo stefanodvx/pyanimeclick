@@ -110,6 +110,15 @@ def url_to_id(url: str) -> int:
             continue
         return int(part)
     
+def keep_digits(string: str) -> int:
+    return int(re.sub(r"[^\d]+", "", string))
+
+def parse_year(strings: list[str]):
+    if len(strings) > 1:
+        start, end = map(keep_digits, strings)
+        return start, end
+    return keep_digits(strings[0]), None
+
 def string_to_nationality(string: str) -> Nationality:
     return Nationality(string.lower().strip())
 
