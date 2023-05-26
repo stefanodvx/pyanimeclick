@@ -116,13 +116,10 @@ def keep_digits(string: str) -> int:
         return int(string)
     return
 
-def parse_year(strings: list[str]):
+def parse_year(strings: list[str]) -> Optional[int]:
     if not isinstance(strings, list):
         strings = list(strings)
-    if len(strings) > 1:
-        start, end = map(keep_digits, strings)
-        return start, end
-    return keep_digits(strings[0]), None
+    return keep_digits(strings[0])
 
 def string_to_nationality(string: str) -> Nationality:
     return Nationality(string.lower().strip())
