@@ -1,5 +1,13 @@
 from enum import Enum, auto
 
+class Nationality(Enum):
+    JAPAN = "giappone"
+    UNKNOWN = auto()
+
+    @classmethod
+    def _missing_(cls, _):
+        return cls.UNKNOWN
+
 class TitleType(Enum):
     ANIME = "animazione"
     MANGA = "fumetto"

@@ -1,4 +1,4 @@
-from .enums import TitleCategory, TitleType
+from .enums import Nationality, TitleCategory, TitleType
 from .errors import MissingCSRFToken
 
 from bs4 import BeautifulSoup, NavigableString, Tag
@@ -90,6 +90,9 @@ def url_to_id(url: str) -> int:
         if not part.isdigit():
             continue
         return int(part)
+    
+def string_to_nationality(string: str) -> Nationality:
+    return Nationality(string.lower().strip())
 
 def string_to_title_type(string: str) -> TitleType:
     return TitleType(string.lower().strip())
