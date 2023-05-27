@@ -75,11 +75,11 @@ def find_next_tag(
         attr = getattr(next_tag, property, default)
     if key:
         attr = next_tag.get(key, default)
+    print(attr)
     is_string = isinstance(attr, str)
     # Covert string to int if wanted
-    if convert_digits and is_string:
-        if attr.isdigit():
-            return int(attr)
+    if convert_digits and is_string and attr.isdigit():
+        return int(attr)
     # Clean string if wanted
     if clean and property == "string" and is_string:
         attr = clean_str(attr)
