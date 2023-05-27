@@ -67,7 +67,6 @@ def find_next_tag(
     if not parent:
        return default
     next_tag = parent.find_next(*args, **kwargs)
-    print(next_tag)
     if not next_tag:
         return default
     if not (property and key):
@@ -80,6 +79,7 @@ def find_next_tag(
     if key:
         # Get attribute from dict
         attr = next_tag.get(key, default)
+        print("key", key, end="\n\n")
     is_string = isinstance(attr, str)
     # Covert string to int if wanted
     if convert_digits and is_string and attr.isdigit():
@@ -87,7 +87,7 @@ def find_next_tag(
     # Clean string if wanted
     if clean and property == "string" and is_string:
         attr = clean_str(attr)
-        print(attr)
+        print("attr", attr, end="\n\n")
     # Split string if wanted
     if sep and is_string:
         attr = attr.split(sep)
