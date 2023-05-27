@@ -80,7 +80,6 @@ def find_next_tag(
     if key:
         # Get attribute from dict
         attr = next_tag.get(key, default)
-    print(attr)
     is_string = isinstance(attr, str)
     # Covert string to int if wanted
     if convert_digits and is_string and attr.isdigit():
@@ -88,6 +87,7 @@ def find_next_tag(
     # Clean string if wanted
     if clean and property == "string" and is_string:
         attr = clean_str(attr)
+        print(attr)
     # Split string if wanted
     if sep and is_string:
         attr = attr.split(sep)
