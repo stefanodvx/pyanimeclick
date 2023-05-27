@@ -4,7 +4,7 @@ from typing import Optional
 from .misc import Cover
 
 from ..utils import (
-    string_to_enum,
+    str_to_enum,
     resolve_path,
     get_cover,
 )
@@ -39,12 +39,12 @@ class SearchResult:
         title_path = result["url"]
         title_url = resolve_path(title_path)
 
-        title_type = string_to_enum(
+        title_type = str_to_enum(
             result["payload"]["tipo_opera"],
             enum=TitleType
         )
         title_category = [
-            string_to_enum(part, enum=TitleCategory)
+            str_to_enum(part, enum=TitleCategory)
             for part in result["payload"]["categoria"].split(",")
         ]
         title_year = int(result["payload"]["anno_inizio"])

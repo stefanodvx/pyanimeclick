@@ -1,4 +1,3 @@
-from .enums import Nationality, TitleCategory, TitleType
 from .errors import MissingCSRFToken
 
 from bs4 import BeautifulSoup, NavigableString, Tag

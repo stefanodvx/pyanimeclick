@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from .misc import Cover
 
 from ..utils import (
-    string_to_enum,
+    str_to_enum,
     find_matching_tag,
     resolve_path,
     get_cover,
