@@ -146,6 +146,7 @@ def parse_year(strings: list[str]) -> Optional[int]:
     if not isinstance(strings, list):
         strings = list(strings)
     string = strings[0]
+    print(string)
     if string:
         return keep_digits(clean_str(string))
 
