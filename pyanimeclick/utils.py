@@ -58,6 +58,9 @@ def find_next_tag(
     parent: Tag,
     property: str = None,
     default: object = None,
+    clean: bool = True,
+    convert_digits: bool = True,
+    sep: Optional[str] = None,
     *args,
     **kwargs
 ):
@@ -66,7 +69,21 @@ def find_next_tag(
     next_tag = parent.find_next(*args, **kwargs)
     if not next_tag:
         return default
-    return getattr(next_tag, property, default) if property else next_tag
+    if property:
+        attr = getattr(next_tag, property, default)
+        is_string = isinstance(attr, str)
+        # Covert string to int if wanted
+        if convert_digits and is_string:
+            return int(attr)
+        # Clean string if wanted
+        if clean and property == "string" and is_string:
+            attr = clean_str(attr)
+        # Split string if wanted
+        if sep and is_string:
+            attr = attr.split(sep)
+        return attr
+    else:
+        next_tag
 
 def find_matching_tag(
     soup: BeautifulSoup,
@@ -79,6 +96,12 @@ def find_matching_tag(
         match = pattern.search(tag.string)
         return tag, match
     return None, None
+
+def clean_str(string: str, lower: bool = False) -> str:
+    string = string.replace("\xa0", " ") # Broken spaces
+    if lower:
+        string = string.lower()
+    return string.strip()
 
 def i_pattern(pattern: str) -> re.Pattern:
     return re.compile(pattern, flags=re.I)
@@ -120,10 +143,10 @@ def keep_digits(string: str) -> int:
 def parse_year(strings: list[str]) -> Optional[int]:
     if not isinstance(strings, list):
         strings = list(strings)
-    return keep_digits(strings[0])
+    return keep_digits(clean_str(strings[0]))
 
-def string_to_enum(string: str, enum: Enum) -> Enum:
-    return enum(string.lower().strip())
+def str_to_enum(string: str, enum: Enum) -> Enum:
+    return enum(clean_str(string, lower=True))
 
 def parse_csrf_token(page: str) -> Optional[str]:
     # name=\"_csrf_token\" value=\"-VMkjKrcNYaR4AHuuEglPVHUsJ1hV8qsC8u3kIoS89I\"
