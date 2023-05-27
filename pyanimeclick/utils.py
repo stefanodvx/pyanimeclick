@@ -83,7 +83,7 @@ def find_next_tag(
             attr = attr.split(sep)
         return attr
     else:
-        next_tag
+        return next_tag
 
 def find_matching_tag(
     soup: BeautifulSoup,
