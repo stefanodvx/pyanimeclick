@@ -56,6 +56,7 @@ def find_next_tags(
 def find_next_tag(
     parent: Tag,
     property: str = None,
+    key: str = None,
     default: object = None,
     clean: bool = True,
     convert_digits: bool = True,
@@ -68,22 +69,24 @@ def find_next_tag(
     next_tag = parent.find_next(*args, **kwargs)
     if not next_tag:
         return default
+    if not (property and key):
+        return next_tag
     if property:
         attr = getattr(next_tag, property, default)
-        is_string = isinstance(attr, str)
-        # Covert string to int if wanted
-        if convert_digits and is_string:
-            if attr.isdigit():
-                return int(attr)
-        # Clean string if wanted
-        if clean and property == "string" and is_string:
-            attr = clean_str(attr)
-        # Split string if wanted
-        if sep and is_string:
-            attr = attr.split(sep)
-        return attr
-    else:
-        return next_tag
+    if key:
+        attr = next_tag.get(key, default)
+    is_string = isinstance(attr, str)
+    # Covert string to int if wanted
+    if convert_digits and is_string:
+        if attr.isdigit():
+            return int(attr)
+    # Clean string if wanted
+    if clean and property == "string" and is_string:
+        attr = clean_str(attr)
+    # Split string if wanted
+    if sep and is_string:
+        attr = attr.split(sep)
+    return attr
 
 def find_matching_tag(
     soup: BeautifulSoup,
