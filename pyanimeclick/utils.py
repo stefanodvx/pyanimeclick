@@ -73,7 +73,8 @@ def find_next_tag(
         is_string = isinstance(attr, str)
         # Covert string to int if wanted
         if convert_digits and is_string:
-            return int(attr)
+            if attr.isdigit():
+                return int(attr)
         # Clean string if wanted
         if clean and property == "string" and is_string:
             attr = clean_str(attr)
