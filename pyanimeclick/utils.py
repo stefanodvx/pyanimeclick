@@ -109,6 +109,15 @@ def clean_str(string: str, lower: bool = False) -> str:
         string = string.lower()
     return string.strip()
 
+def parse_synopsis(soup: BeautifulSoup) -> str:
+    synopsis = soup.find("div", {"id": "trama-div"})
+    if not synopsis:
+        return
+    strings = list(synopsis.stripped_strings)
+    if strings[0].lower() == "trama:":
+        strings.pop(0)
+    return "\n".join(strings)
+
 def i_pattern(pattern: str) -> re.Pattern:
     return re.compile(pattern, flags=re.I)
 
