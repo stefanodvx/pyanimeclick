@@ -75,7 +75,6 @@ def find_next_tag(
         attr = getattr(next_tag, property, default)
     if key:
         attr = next_tag.get(key, default)
-    print(attr)
     is_string = isinstance(attr, str)
     # Covert string to int if wanted
     if convert_digits and is_string and attr.isdigit():
@@ -146,7 +145,9 @@ def keep_digits(string: str) -> int:
 def parse_year(strings: list[str]) -> Optional[int]:
     if not isinstance(strings, list):
         strings = list(strings)
-    return keep_digits(clean_str(strings[0]))
+    string = strings[0]
+    if string:
+        return keep_digits(clean_str(string))
 
 def str_to_enum(string: str, enum: Enum) -> Enum:
     return enum(clean_str(string, lower=True))
