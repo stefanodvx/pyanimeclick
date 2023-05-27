@@ -69,9 +69,9 @@ def find_next_tag(
     next_tag = parent.find_next(*args, **kwargs)
     if not next_tag:
         return default
-    if not (property and key):
+    if not (property or key):
         return next_tag
-    elif property and key:
+    if property and key:
         raise Exception("Can't use both property and key.")
     if property:
         # Get attribute using getattr
@@ -79,7 +79,6 @@ def find_next_tag(
     if key:
         # Get attribute from dict
         attr = next_tag.get(key, default)
-        print("key", key, end="\n\n")
     is_string = isinstance(attr, str)
     # Covert string to int if wanted
     if convert_digits and is_string and attr.isdigit():
@@ -87,7 +86,6 @@ def find_next_tag(
     # Clean string if wanted
     if clean and property == "string" and is_string:
         attr = clean_str(attr)
-        print("attr", attr, end="\n\n")
     # Split string if wanted
     if sep and is_string:
         attr = attr.split(sep)
@@ -152,7 +150,6 @@ def parse_year(strings: list[str]) -> Optional[int]:
     if not isinstance(strings, list):
         strings = list(strings)
     string = strings[0]
-    print(string)
     if string:
         return keep_digits(clean_str(string))
 
