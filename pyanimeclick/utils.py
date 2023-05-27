@@ -67,14 +67,20 @@ def find_next_tag(
     if not parent:
        return default
     next_tag = parent.find_next(*args, **kwargs)
+    print(next_tag)
     if not next_tag:
         return default
     if not (property and key):
         return next_tag
+    elif property and key:
+        raise Exception("Can't use both property and key.")
     if property:
+        # Get attribute using getattr
         attr = getattr(next_tag, property, default)
     if key:
+        # Get attribute from dict
         attr = next_tag.get(key, default)
+    print(attr)
     is_string = isinstance(attr, str)
     # Covert string to int if wanted
     if convert_digits and is_string and attr.isdigit():
